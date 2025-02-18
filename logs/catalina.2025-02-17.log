@@ -33,3 +33,7 @@
 17-Feb-2025 13:07:16.615 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of deployment descriptor [C:\Users\pc\Desktop\briefs\EduManager\conf\Catalina\localhost\ROOT.xml] has finished in [578] ms
 17-Feb-2025 13:07:16.623 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
 17-Feb-2025 13:07:16.676 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [728] milliseconds
+17-Feb-2025 21:13:30.465 INFO [Thread-1] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8080"]
+17-Feb-2025 21:13:30.507 INFO [Thread-1] org.apache.catalina.core.StandardService.stopInternal Stopping service [Catalina]
+17-Feb-2025 21:13:30.584 INFO [Thread-1] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8080"]
+17-Feb-2025 21:13:30.606 INFO [Thread-1] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8080"]
