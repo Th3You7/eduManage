@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public class StudentDao {
-    private Connection connection;
+    private static Connection connection;
 
 public StudentDao(){
 
@@ -42,7 +42,7 @@ public StudentDao(){
 }
 
     // create a student
-    public void createStudent(Student student) {
+    public static void createStudent(Student student) {
         if (connection == null) {
             System.err.println("Database connection is not initialized!");
             return;
@@ -62,7 +62,7 @@ public StudentDao(){
     }
 
     // list all students
-    public List<Student> getAllPersons() {
+    public static List<Student> getAllStudents() {
         List<Student> personList = new ArrayList<>();
         if (connection == null) {
             System.err.println("Database connection is not initialized!");
@@ -89,7 +89,7 @@ public StudentDao(){
     }
 
     // get a person by git
-    public Student getPersonById(int id) {
+    public static Student getStudentById(int id) {
         if (connection == null) {
             System.err.println("Database connection is not initialized!");
             return null;
@@ -117,7 +117,7 @@ public StudentDao(){
     }
 
     // update a person
-    public void updatePerson(Student student) {
+    public static void updateStudent(Student student) {
         if (connection == null) {
             System.err.println("Database connection is not initialized!");
             return;
@@ -138,7 +138,7 @@ public StudentDao(){
     }
 
     // delete a person by id
-    public void deleteStudent (int id) {
+    public static void deleteStudent(int id) {
         if (connection == null) {
             System.err.println("Database connection is not initialized!");
             return;
