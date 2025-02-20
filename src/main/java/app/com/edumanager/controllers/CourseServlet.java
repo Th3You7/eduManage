@@ -50,11 +50,11 @@ public class CourseServlet extends HttpServlet {
         }
     }
 
-    private void addCourse(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+   private void addCourse(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String description = req.getParameter("description");
         Course course = new Course(name, description);
-        HttpSession session = req.getSession();
+         HttpSession session = req.getSession();
         try {
             courseDao.addCourse(course);
             session.setAttribute("message", "Course added successfully");
