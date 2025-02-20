@@ -13,9 +13,9 @@ public class CourseDao {
 
     private static final String SELECT_COURSE = "SELECT * FROM COURSE WHERE id=?";
     private static final String SELECT_ALL_COURSES = "SELECT * FROM COURSE";
-    private static final String INSERT_COURSE = "INSERT INTO COURSE" + "  (name, desc) VALUES " + "( ?, ?);";
-    private static final String DELETE_COURSE = "DELETE FROM COURSE WHERE _id=?";
-    private static final String UPDATE_COURSE = "UPDATE COURSE SET name = ?, desc = ? WHERE id = ?";
+    private static final String INSERT_COURSE = "INSERT INTO COURSE" + "  (name, `desc`) VALUES " + "( ?, ?);";
+    private static final String DELETE_COURSE = "DELETE FROM COURSE WHERE id=?";
+    private static final String UPDATE_COURSE = "UPDATE COURSE SET name = ?, `desc` = ? WHERE id = ?";
 
 
     //public EmployerDao() {}
@@ -65,7 +65,8 @@ public class CourseDao {
             PreparedStatement ps = conn.prepareStatement(INSERT_COURSE);
             ps.setString(1, course.getName());
             ps.setString(2, course.getDescription());
-            ps.executeQuery();
+            ps.executeUpdate();
+            System.out.println("Course added.");
         }catch (SQLException e){
             System.err.println("SQL Error: " + e.getMessage());
         }
@@ -96,7 +97,8 @@ public class CourseDao {
             PreparedStatement ps = conn.prepareStatement(UPDATE_COURSE);
             ps.setString(1, course.getName());
             ps.setString(2, course.getDescription());
-            ps.executeQuery();
+            ps.setInt(3, course.getId());
+            ps.executeUpdate();
         }catch(SQLException e) {
             System.err.println("SQL Error: " + e.getMessage());
         }
@@ -107,7 +109,7 @@ public class CourseDao {
             Connection conn = getConnection();
             PreparedStatement ps = conn.prepareStatement(DELETE_COURSE);
             ps.setInt(1, id);
-            ps.executeQuery();
+            ps.executeUpdate();
         }catch (SQLException e){
             System.err.println("SQL Error: " + e.getMessage());
         }
