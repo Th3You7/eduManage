@@ -17,28 +17,34 @@ public class CourseServlet extends HttpServlet {
     CourseDao courseDao = new CourseDao();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        doGet(req, resp);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+
+        // if no path info we will redirect to list page
         String action = req.getPathInfo();
-        System.out.println(action);
 
         switch (action){
             case "/new":
                 addCourse(req, resp);
-            case "new-form":
+                break;
+            case "/new-form":
                 addCourseForm(req, resp);
+                break;
             case "/edit":
                 editCourse(req, resp);
-            case "edit-form":
+                break;
+            case "/edit-form":
                 editCourseForm(req, resp);
+                break;
             case "/delete":
                 deleteCourse(req, resp);
+                break;
             case "/list":
                 listCourses(req, resp);
+                break;
             default:
                 resp.sendRedirect("/course/list");
         }
@@ -60,7 +66,7 @@ public class CourseServlet extends HttpServlet {
         resp.sendRedirect("course/list");
     }
     private void addCourseForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/course/form.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/course/form.jsp").forward(req, resp);
     }
     private void editCourse(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
@@ -80,18 +86,18 @@ public class CourseServlet extends HttpServlet {
             session.setAttribute("messageType", "danger");
         }
 
-        resp.sendRedirect("/course/list");
+        resp.sendRedirect("course/list");
 
     }
     private void editCourseForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         Course course = courseDao.getCourse(Integer.parseInt(id));
         req.setAttribute("course", course);
-        req.getRequestDispatcher("course-form.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/course/form.jsp").forward(req, resp);
     }
     private void deleteCourse(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String courseId = req.getParameter("courseId");
+        String courseId = req.getParameter("id");
         try {
             courseDao.deleteCourse(Integer.parseInt(courseId));
             session.setAttribute("message", "Course deleted successfully");
@@ -100,12 +106,13 @@ public class CourseServlet extends HttpServlet {
             session.setAttribute("error", e.getMessage());
             session.setAttribute("messageType", "danger");
         }
-        resp.sendRedirect("/course/list");
+        resp.sendRedirect("course/list");
     }
     private void listCourses(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ArrayList<Course> courses = courseDao.getAllCourses();
         req.setAttribute("courses", courses);
-        req.getRequestDispatcher("/course/list.jsp").forward(req, resp);
+
+        req.getRequestDispatcher("/WEB-INF/views/course/list.jsp").forward(req, resp);
     }
 }
 
