@@ -48,8 +48,8 @@ public class InscriptionDao {
         try {
             Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
-            preparedStatement.setInt(1, insc.getStudentId());
-            preparedStatement.setInt(2, insc.getStudentId());
+            preparedStatement.setInt(1, insc.getStudent().getId());
+            preparedStatement.setInt(2, insc.getCourse().getId());;
             preparedStatement.setInt(3, insc.getInscDate());
             preparedStatement.executeQuery();
         }catch (SQLException e) {
@@ -89,6 +89,11 @@ public class InscriptionDao {
                 int courseID = Integer.parseInt(rs.getString("courseID"));
                 int studentID = Integer.parseInt(rs.getString("studentID"));
                 int inscDate = Integer.parseInt(rs.getString("inscDate"));
+                // create student
+
+                // create course
+
+                // create inscription
                 Inscriptoin inscription = new Inscriptoin(courseID, studentID, inscDate);
                 inscriptions.add(inscription);
             }
@@ -105,8 +110,8 @@ public class InscriptionDao {
         try {
             Connection connection = getConnection();
             PreparedStatement ps = connection.prepareStatement(UPDATE);
-            ps.setInt(1, insc.getStudentId());
-            ps.setInt(2, insc.getCourseId());
+            ps.setInt(1, insc.getStudent().getId());
+            ps.setInt(2, insc.getCourse().getId());
             ps.setInt(3, insc.getId());
             ps.executeUpdate();
         }catch (SQLException e) {
@@ -115,7 +120,7 @@ public class InscriptionDao {
     }
 
     // deleteInscription
-    public void deleteInscriptionById(int id){
+    public void deleteInscriptionById(int id) {
 
         try {
             Connection connection = getConnection();

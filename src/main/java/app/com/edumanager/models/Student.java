@@ -1,10 +1,10 @@
 package app.com.edumanager.models;
 
 public class Student {
-    int id ;
-    int birthdate;
-    String name;
-    String email;
+    private  int id ;
+    private  int birthdate;
+    private  String name;
+    private  String email;
 
     public Student(int id, int birthdate, String name, String email) {
         this.id = id;
