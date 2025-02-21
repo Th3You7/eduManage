@@ -9,7 +9,7 @@ public class CourseDao {
     private final String  jdbcUrl = "jdbc:mysql://localhost:3306/edumanagedb";
     private final String jdbcDriver = "com.mysql.cj.jdbc.Driver";
     private final String username = "root";
-    private final String password = "th3you78";
+    private final String password = "";
 
     private static final String SELECT_COURSE = "SELECT * FROM COURSE WHERE id=?";
     private static final String SELECT_ALL_COURSES = "SELECT * FROM COURSE";
