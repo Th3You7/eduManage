@@ -21,7 +21,7 @@ public StudentDao(){
         }
 
         try (Statement statement = connection.createStatement()) {
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS person (" +
+            String createTableSQL = "CREATE TABLE IF NOT EXISTS student (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY, " +
                     "birth_date INT NOT NULL" +
                     "name VARCHAR(100) NOT NULL, " +
@@ -48,13 +48,13 @@ public StudentDao(){
             return;
         }
 
-        String query = "INSERT INTO person (name,email, birthdate) VALUES ( ?, ?, ?)";
+        String query = "INSERT INTO student (name,email, birth_date) VALUES ( ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, student.getName());
             stmt.setString(2, student.getEmail());
             stmt.setInt(3, student.getBirthdate());
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error inserting person: " + e.getMessage());
             e.printStackTrace();
@@ -69,13 +69,13 @@ public StudentDao(){
             return personList;
         }
 
-        String query = "SELECT * FROM person";
+        String query = "SELECT * FROM student";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 Student student = new Student(
                         rs.getInt("id"),
-                        rs.getInt("birthdate"),
+                        rs.getInt("birth_date"),
                         rs.getString("name"),
                         rs.getString("email")
                 );
@@ -96,16 +96,16 @@ public StudentDao(){
         }
 
         Student student = null;
-        String query = "SELECT * FROM person WHERE id = ?";
+        String query = "SELECT * FROM student WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                      student  = new Student(
                             rs.getInt("id"),
-                            rs.getInt("birthdate"),
+                            rs.getInt("birth_date"),
                             rs.getString("name"),
-                            rs.getString("birthdate")
+                            rs.getString("email")
                     );
                 }
             }
@@ -123,7 +123,7 @@ public StudentDao(){
             return;
         }
 
-        String query = "UPDATE person SET birthdate = ?,name = ?,email = ?  WHERE id = ?";
+        String query = "UPDATE student SET birth_date = ?,name = ?,email = ?  WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, student.getBirthdate());
             stmt.setString(2, student.getName());
@@ -144,10 +144,10 @@ public StudentDao(){
             return;
         }
 
-        String query = "DELETE FROM person WHERE id = ?";
+        String query = "DELETE FROM student WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting student : " + e.getMessage());
             e.printStackTrace();
