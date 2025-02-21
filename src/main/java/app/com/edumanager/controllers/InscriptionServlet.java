@@ -24,12 +24,12 @@ public class InscriptionServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        doGet(req, resp);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+
         String action = req.getPathInfo();
 
         switch (action){
@@ -46,13 +46,13 @@ public class InscriptionServlet extends HttpServlet {
 
     private void listInscription(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Inscriptoin> inscription = inscriptionDao.getAllInscription();
-        req.setAttribute("inscription", inscription);
-        req.getRequestDispatcher("inscription.jsp").forward(req, resp);
+        req.setAttribute("inscriptions", inscription);
+        req.getRequestDispatcher("/WEB-INF/views/inscription/list.jsp").forward(req, resp);
     }
 
     private void deleteInscription(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String inscriptionId = req.getParameter("inscriptionId");
+        String inscriptionId = req.getParameter("id");
 
         try {
             inscriptionDao.deleteInscriptionById(Integer.parseInt(inscriptionId) );

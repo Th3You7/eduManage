@@ -4,26 +4,22 @@ import java.util.Date;
 
 public class Inscriptoin {
     private int id;
-    private int studentId;
-    private int courseId;
+    private Student student;
+    private Course course;
     private int inscDate;
 
     public Inscriptoin() {
 
     }
 
-    public Inscriptoin(int id, int studentId, int courseId, int inscDate) {
+    public Inscriptoin(int id, Student student, Course course, int inscDate) {
         this.id = id;
-        this.courseId = studentId;
-        this.studentId = courseId;
+        this.course = course;
+        this.student = student;
         this.inscDate = inscDate;
     }
 
-   public Inscriptoin(int studentId, int courseId, int inscDate) {
-        this.studentId = studentId;
-        this.courseId = courseId;
-        this.inscDate = inscDate;
-   }
+
 
     public int getId() {
         return id;
@@ -33,18 +29,18 @@ public class Inscriptoin {
         this.id = id;
     }
 
-   public int getStudentId() {
-        return studentId;
+   public Student getStudent() {
+        return student;
    }
 
    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+        this.student = student;
    }
-   public int getCourseId() {
-        return courseId;
+   public Course getCourse() {
+        return course;
    }
    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+        this.course = course;
    }
    public int getInscDate() {
         return inscDate;
@@ -58,8 +54,8 @@ public class Inscriptoin {
     public String toString() {
         return "Inscriptin{" +
                 "id=" + id +
-                ", student_id=" +studentId +
-                ", course_id=" + courseId +
+                ", student_id=" +student +
+                ", course_id=" + course+
                 ", start_date=" + inscDate +
                 '}';
     }
