@@ -8,8 +8,11 @@ public class Inscriptoin {
     private Course course;
     private int inscDate;
 
-    public Inscriptoin() {
+    public Inscriptoin(Student student, Course course, int inscDate) {
 
+        this.course = course;
+        this.student = student;
+        this.inscDate = inscDate;
     }
 
     public Inscriptoin(int id, Student student, Course course, int inscDate) {
