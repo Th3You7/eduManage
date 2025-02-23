@@ -1,21 +1,19 @@
 package app.com.edumanager.models;
 
-import java.util.Date;
-
-public class Inscriptoin {
+public class Inscription {
     private int id;
     private Student student;
     private Course course;
     private int inscDate;
 
-    public Inscriptoin(Student student, Course course, int inscDate) {
+    public Inscription(Student student, Course course, int inscDate) {
 
         this.course = course;
         this.student = student;
         this.inscDate = inscDate;
     }
 
-    public Inscriptoin(int id, Student student, Course course, int inscDate) {
+    public Inscription(int id, Student student, Course course, int inscDate) {
         this.id = id;
         this.course = course;
         this.student = student;
@@ -32,23 +30,17 @@ public class Inscriptoin {
         this.id = id;
     }
 
-   public Student getStudent() {
+    public Student getStudent() {
         return student;
    }
 
-   public void setStudentId(int studentId) {
-        this.student = student;
-   }
-   public Course getCourse() {
+    public Course getCourse() {
         return course;
    }
-   public void setCourseId(int courseId) {
-        this.course = course;
-   }
-   public int getInscDate() {
-        return inscDate;
 
-   }
+    public int getInscDate() {
+        return inscDate;
+    }
    public void setInscDate(int inscDate) {
         this.inscDate = inscDate;
    }

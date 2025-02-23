@@ -70,10 +70,11 @@
                             <input type="text"
                                    value="<c:out value='${student.birthdate}' />" class="form-control"
                                    name="birthdate" required="required">
+                        </fieldset>
 
-                            <fieldset class="form-group">
+                        <fieldset class="form-group">
                                 <label>course</label>
-                                <select name="courses">
+                                <select name="courses" class="form-control">
                                  <c:forEach var="course" items="${courses}">
                                      <option  value='<c:out value='${course.id}' />'>
                                          <c:out value='${course.name}' />

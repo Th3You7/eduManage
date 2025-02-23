@@ -3,7 +3,7 @@ package app.com.edumanager.controllers;
 import app.com.edumanager.dao.CourseDao;
 import app.com.edumanager.dao.InscriptionDao;
 import app.com.edumanager.models.Course;
-import app.com.edumanager.models.Inscriptoin;
+import app.com.edumanager.models.Inscription;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,15 +12,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/inscription/*")
 public class InscriptionServlet extends HttpServlet {
     InscriptionDao inscriptionDao = new InscriptionDao();
+    CourseDao courseDao = new CourseDao();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,14 +36,18 @@ public class InscriptionServlet extends HttpServlet {
             case "/list":
                 listInscription(req, resp);
                 break;
+            case "/filter":
+                filterByCourse(req, resp);
                   default:
                   break;
         }
     }
 
     private void listInscription(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Inscriptoin> inscription = inscriptionDao.getAllInscription();
+        List<Inscription> inscription = inscriptionDao.getAllInscription();
+        List<Course> courses = courseDao.getAllCourses();
         req.setAttribute("inscriptions", inscription);
+        req.setAttribute("courses", courses);
         req.getRequestDispatcher("/WEB-INF/views/inscription/list.jsp").forward(req, resp);
     }
 
@@ -66,6 +67,19 @@ public class InscriptionServlet extends HttpServlet {
 
         req.getRequestDispatcher("/inscription/list.jsp").forward(req, resp);    }
 
+    private void filterByCourse(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
 
+        int courseId = Integer.parseInt(req.getParameter("course"));
+        List<Inscription> inscriptions = inscriptionDao.getAllInscriptionByCourse(courseId);
+
+        req.setAttribute("inscriptions", inscriptions);
+        req.setAttribute("courses", courseDao.getAllCourses());
+
+        req.getRequestDispatcher("/WEB-INF/views/inscription/list.jsp").forward(req, resp);
+
+
+
+    }
 
 }

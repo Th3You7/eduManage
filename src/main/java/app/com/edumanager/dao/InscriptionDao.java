@@ -1,10 +1,9 @@
 package app.com.edumanager.dao;
 
 import app.com.edumanager.models.Course;
-import app.com.edumanager.models.Inscriptoin;
+import app.com.edumanager.models.Inscription;
 import app.com.edumanager.models.Student;
 
-import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,23 +14,26 @@ public class InscriptionDao {
     private static  final  int PORT = 3306;
     private static  final  String DB_NAME = "edumanagedb";
     private static  final  String USERNAME = "root";
-    private static  final  String PASSWORD = "";
+    private static  final  String PASSWORD = "th3you78";
 
-    private static  final  String DRIVER = "com.mysql.jdbc.Driver";
-    private static  final  String INSERT = "insert into inscription (studentID, courseID, inscDate) values(?,?,?)";
+    private static  final  String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static  final  String INSERT = "insert into inscription (studentID, courseID, insc_date) VALUES (?,?,?)";
     private static  final  String DELETE = "delete from inscription where id = ?";
-    private static  final  String SELECT_ALL = "select * from inscription";
-    private static  final  String SELECT_BY_ID = "select inscription.* , student.*, student.name as student_name, course.*, course.name as course_name " +
+    private static  final  String SELECT_ALL = "select inscription.* , student.*, student.name as student_name, course.*, course.name as course_name, inscription.id as inscription_id " +
+                                            "from inscription " +
+                                            "inner join student on inscription.studentID = student.id " +
+                                            "inner join course on inscription.courseID = course.id ";
+    private static  final  String SELECT_BY_ID = "select inscription.* , student.*, student.name as student_name, course.*, course.name as course_name, inscription.id as inscription_id " +
                                                 "from inscription " +
                                                 "inner join student on ?= student.id " +
                                                 "inner join course on ? = course.id ";
     private static  final  String UPDATE = "update inscription set studentID = ?, courseID = ? where id = ?";
 
-    private  static  final  String SELECT_ALL_BY_COURSE =  "select inscription.* , student.*, student.name as student_name, course.*, course.name as course_name " +
+    private  static  final  String SELECT_ALL_BY_COURSE =  "select inscription.* , student.*, student.name as student_name, course.*, course.name as course_name, inscription.id as inscription_id " +
             "from inscription " +
             "inner join student on inscription.studentID = student.id " +
             "inner join course on inscription.courseID = course.id where course.id = ?";
-    private  static  final  String SELECT_ALL_BY_STUDENT =  "select inscription.* , student.*, student.name as student_name, course.*, course.name as course_name " +
+    private  static  final  String SELECT_ALL_BY_STUDENT =  "select inscription.* , student.*, student.name as student_name, course.*, course.name as course_name, inscription.id as inscription_id " +
             "from inscription " +
             "inner join student on inscription.studentID = student.id " +
             "inner join course on inscription.courseID = course.id where student.id = ?";
@@ -60,25 +62,26 @@ public class InscriptionDao {
 
 
     // add Inscription
-    public void insertInscription(Inscriptoin insc){
+    public void insertInscription(Inscription insc){
         try {
             Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setInt(1, insc.getStudent().getId());
             preparedStatement.setInt(2, insc.getCourse().getId());;
             preparedStatement.setInt(3, insc.getInscDate());
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         }catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
         }
     }
     // get inscription
-    public Inscriptoin getInscriptionById(int id){
-        Inscriptoin inscription = null;
+    public Inscription getInscriptionById(int id){
+        Inscription inscription = null;
         try {
             Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()){
                 int courseID = Integer.parseInt(rs.getString("courseID"));
@@ -95,7 +98,7 @@ public class InscriptionDao {
                 Student student = new Student(studentID,studentdt,  studentEmail,studentName);
 
 
-                inscription = new Inscriptoin( student,course, inscDate);
+                inscription = new Inscription( student,course, inscDate);
             }
         }catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
@@ -105,31 +108,31 @@ public class InscriptionDao {
     }
 
     // getAllInscriptions
-    public List<Inscriptoin> getAllInscription(){
-        List<Inscriptoin> inscriptions = new ArrayList<Inscriptoin>();
+    public List<Inscription> getAllInscription(){
+        List<Inscription> inscriptions = new ArrayList<Inscription>();
         try {
             Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()){
-                int courseID = Integer.parseInt(rs.getString("courseID"));
+                int insciptionID = Integer.parseInt(rs.getString("inscription_id"));
                 int studentID = Integer.parseInt(rs.getString("studentID"));
-                int inscDate = Integer.parseInt(rs.getString("inscDate"));
+                int inscDate = Integer.parseInt(rs.getString("insc_date"));
 
                 String studentName = rs.getString("student_name");
                 String studentEmail = rs.getString("email");
-                int studentdt = Integer.parseInt(rs.getString("birth_date"));
+                int studentBirthDate = Integer.parseInt(rs.getString("birth_date"));
                 String courseName = rs.getString("course_name");
-                String courseDescription = rs.getString("description");
+                String courseDescription = rs.getString("desc");
                 // create student
-                Student student = new Student(studentID,studentdt,  studentEmail,studentName);
+                Student student = new Student(studentID,studentBirthDate, studentName,studentEmail);
 
                 // create course
 
                 Course course = new Course(courseName,courseDescription);
 
                 // create inscription
-                Inscriptoin inscription = new Inscriptoin(student, course, inscDate);
+                Inscription inscription = new Inscription(insciptionID, student, course, inscDate);
 
                 inscriptions.add(inscription);
             }
@@ -142,7 +145,7 @@ public class InscriptionDao {
 }
 
     // updateInscription
-    public void updateInscription(Inscriptoin insc){
+    public void updateInscription(Inscription insc){
         try {
             Connection connection = getConnection();
             PreparedStatement ps = connection.prepareStatement(UPDATE);
@@ -170,8 +173,8 @@ public class InscriptionDao {
 
     }
 
-    public List<Inscriptoin> getAllInscriptionByCourse(int courseID){
-        List<Inscriptoin> inscriptions = new ArrayList<Inscriptoin>();
+    public List<Inscription> getAllInscriptionByCourse(int courseID){
+        List<Inscription> inscriptions = new ArrayList<Inscription>();
         try {
             Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BY_COURSE);
@@ -179,23 +182,24 @@ public class InscriptionDao {
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()){
                // int courseID = Integer.parseInt(rs.getString("courseID"));
+                int insciptionID = Integer.parseInt(rs.getString("inscription_id"));
                 int studentID = Integer.parseInt(rs.getString("studentID"));
-                int inscDate = Integer.parseInt(rs.getString("inscDate"));
+                int inscDate = Integer.parseInt(rs.getString("insc_date"));
 
                 String studentName = rs.getString("student_name");
                 String studentEmail = rs.getString("email");
                 int studentdt = Integer.parseInt(rs.getString("birth_date"));
                 String courseName = rs.getString("course_name");
-                String courseDescription = rs.getString("description");
+                String courseDescription = rs.getString("desc");
                 // create student
-                Student student = new Student(studentID,studentdt,  studentEmail,studentName);
+                Student student = new Student(studentID,studentdt,  studentName, studentEmail);
 
                 // create course
 
                 Course course = new Course(courseName,courseDescription);
 
                 // create inscription
-                Inscriptoin inscription = new Inscriptoin(student, course, inscDate);
+                Inscription inscription = new Inscription(insciptionID, student, course, inscDate);
 
                 inscriptions.add(inscription);
             }
@@ -208,32 +212,34 @@ public class InscriptionDao {
 
 
     }
-    public List<Inscriptoin> getAllInscriptionBystudent(int studentId){
-        List<Inscriptoin> inscriptions = new ArrayList<Inscriptoin>();
+
+    public List<Inscription> getAllInscriptionBystudent(int studentId){
+        List<Inscription> inscriptions = new ArrayList<Inscription>();
         try {
             Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BY_STUDENT);
             preparedStatement.setInt(1, studentId);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()){
-                int courseID = Integer.parseInt(rs.getString("courseID"));
+
+                int insciptionID = Integer.parseInt(rs.getString("inscription_id"));
                 int studentID = Integer.parseInt(rs.getString("studentID"));
-                int inscDate = Integer.parseInt(rs.getString("inscDate"));
+                int inscDate = Integer.parseInt(rs.getString("insc_date"));
 
                 String studentName = rs.getString("student_name");
                 String studentEmail = rs.getString("email");
                 int studentdt = Integer.parseInt(rs.getString("birth_date"));
                 String courseName = rs.getString("course_name");
-                String courseDescription = rs.getString("description");
+                String courseDescription = rs.getString("desc");
                 // create student
-                Student student = new Student(studentID,studentdt,  studentEmail,studentName);
+                Student student = new Student(studentID,studentdt,studentName, studentEmail);
 
                 // create course
 
                 Course course = new Course(courseName,courseDescription);
 
                 // create inscription
-                Inscriptoin inscription = new Inscriptoin(student, course, inscDate);
+                Inscription inscription = new Inscription(insciptionID,student, course, inscDate);
 
                 inscriptions.add(inscription);
             }

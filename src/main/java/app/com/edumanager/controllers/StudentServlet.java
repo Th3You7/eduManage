@@ -60,10 +60,12 @@ public class StudentServlet extends HttpServlet {
         int birthdate = Integer.parseInt(req.getParameter("birthdate"));
         String name = req.getParameter("name");
         String email = req.getParameter("email");
+        int courseID = Integer.parseInt(req.getParameter("courses"));
         Student student = new Student(birthdate, name, email);
+        Course course = new Course(courseID);
         HttpSession session = req.getSession();
         try {
-            studentDao.createStudent(student);
+            studentDao.createStudent(student, course);
             session.setAttribute("message", "Student added successfully");
             session.setAttribute("messageType", "success");
         }catch (Exception e){
