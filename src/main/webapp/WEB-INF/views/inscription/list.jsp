@@ -28,6 +28,17 @@
         </c:if>
         <h3 class="text-center">List of Inscription</h3>
         <hr>
+        <form action="/inscription/filter">
+            <label for="course">Filter by course</label>
+            <select id="course" name="course">
+                <c:forEach var="course" items="${courses}">
+                    <option  value='<c:out value='${course.id}' />'>
+                        <c:out value='${course.name}' />
+                    </option>
+                </c:forEach>
+            </select>
+            <input type="submit">
+        </form>
         <br>
         <table class="table table-bordered">
             <thead>
@@ -44,13 +55,10 @@
 
                 <tr>
                     <td><c:out value="${inscription.id}" /></td>
-                    <td><c:out value="${inscription.studentId}" /></td>
-                    <td><c:out value="${inscription.courseId}" /></td>
+                    <td><c:out value="${inscription.student.name}" /></td>
+                    <td><c:out value="${inscription.course.name}" /></td>
                     <td><c:out value="${inscription.inscDate}" /></td>
 
-                    <td><a href="/inscription/edit-form?id=<c:out value='${inscription.id}' />" >Edit</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp; <a
-                                href="/inscription/delete?id=<c:out value='${inscription.id}' /> " data-toggle="modal" data-target="#modal">Delete</a></td>
                 </tr>
             </c:forEach>
             <!-- } -->

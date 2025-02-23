@@ -1,5 +1,7 @@
 package app.com.edumanager.dao;
 
+import app.com.edumanager.models.Course;
+import app.com.edumanager.models.Inscription;
 import app.com.edumanager.models.Student;
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ public StudentDao(){
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         this.connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/edumanagedb", "root", "");
+                "jdbc:mysql://localhost:3306/edumanagedb", "root", "th3you78");
 
         if (this.connection == null) {
             throw new SQLException("Failed to establish database connection!");
@@ -42,19 +44,29 @@ public StudentDao(){
 }
 
     // create a student
-    public static void createStudent(Student student) {
+    public static void createStudent(Student student, Course course) {
         if (connection == null) {
             System.err.println("Database connection is not initialized!");
             return;
         }
 
         String query = "INSERT INTO student (name,email, birth_date) VALUES ( ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, student.getName());
             stmt.setString(2, student.getEmail());
             stmt.setInt(3, student.getBirthdate());
             stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            while (rs.next()) {
+                Inscription inscription = new Inscription(student, course, 20250222);
+                InscriptionDao inscriptionDao = new InscriptionDao();
+                int id = rs.getInt(1);
+
+                student.setId(id);
+
+                inscriptionDao.insertInscription(inscription);
+            }
         } catch (SQLException e) {
             System.err.println("Error inserting person: " + e.getMessage());
             e.printStackTrace();
