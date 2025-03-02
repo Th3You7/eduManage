@@ -34,7 +34,7 @@
         </c:if>
         <h3 class="text-center">List of Employees</h3>
         <hr>
-        <div class="container text-left">
+        <div class="container text-left pl-0">
             <a href="/student/new-form" class="btn btn-success">Add
                 New Student</a>
         </div>

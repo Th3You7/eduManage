@@ -34,9 +34,9 @@
         </c:if>
         <h3 class="text-center">List of Employees</h3>
         <hr>
-        <div class="container text-left">
+        <div class="container text-left pl-0">
             <a href="/course/new-form" class="btn btn-success">Add
-                New User</a>
+                New Course</a>
         </div>
         <br>
         <table class="table table-bordered">
