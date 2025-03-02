@@ -18,7 +18,9 @@
 <body>
 <%@ include file="../../components/navbar.jsp" %>
 
-<div class="container col-md-5">
+<div class="row">
+    <br>
+<div class="container col-md-5 mt-5">
     <c:if test="${not empty sessionScope.message}">
         <div class="alert alert-${sessionScope.messageType}" role="alert">
             <c:out value="${sessionScope.message}" />
@@ -57,6 +59,7 @@
     </div>
 </div>
 
+</div>
 
 
 </body>

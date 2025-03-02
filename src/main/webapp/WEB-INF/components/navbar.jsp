@@ -24,5 +24,13 @@
                 <a class="nav-link" href="/inscription/list">Inscription</a>
             </li>
         </ul>
+        <c:if test="${not empty sessionScope.user}">
+            <div class="ml-auto text-white">
+                <c:out value="${sessionScope.user.email}" />(
+                    <a href="/user/logout" >Disconnect</a>
+                )
+            </div>
+
+        </c:if>
     </nav>
 </header>

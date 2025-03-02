@@ -66,7 +66,7 @@ public class UserServlet extends HttpServlet {
     public void logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         session.invalidate();
-        resp.sendRedirect("/login-page");
+        resp.sendRedirect("/user/login-page");
 
     }
 
