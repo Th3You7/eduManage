@@ -22,17 +22,17 @@ public StudentDao(){
             throw new SQLException("Failed to establish database connection!");
         }
 
-        try (Statement statement = connection.createStatement()) {
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS student (" +
-                    "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                    "birth_date INT NOT NULL" +
-                    "name VARCHAR(100) NOT NULL, " +
-                    "email VARCHAR(255) NOT NULL, " +
-                    ");";
-
-            statement.executeUpdate(createTableSQL);
-            System.out.println("Table 'student' created successfully");
-        }
+//        try (Statement statement = connection.createStatement()) {
+//            String createTableSQL = "CREATE TABLE IF NOT EXISTS student (" +
+//                    "id INT AUTO_INCREMENT PRIMARY KEY, " +
+//                    "birth_date INT NOT NULL" +
+//                    "name VARCHAR(100) NOT NULL, " +
+//                    "email VARCHAR(255) NOT NULL, " +
+//                    ");";
+//
+//            statement.executeUpdate(createTableSQL);
+//            System.out.println("Table 'student' created successfully");
+//        }
 
     } catch (ClassNotFoundException e) {
         System.err.println("MySQL JDBC Driver not found!");
