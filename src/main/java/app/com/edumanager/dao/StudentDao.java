@@ -16,7 +16,7 @@ public StudentDao(){
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         this.connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/edumanagedb", "root", "th3you78");
+                "jdbc:mysql://localhost:3306/edumanagedb", "root", "");
 
         if (this.connection == null) {
             throw new SQLException("Failed to establish database connection!");
